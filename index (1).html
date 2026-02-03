@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>For You ❤️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    section {
+      min-height: 100vh;
+      padding: 50px 20px;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    section.active {
+      display: flex;
+    }
+
+    .card {
+      background: white;
+      color: #222;
+      border-radius: 20px;
+      padding: 25px;
+      max-width: 420px;
+      width: 100%;
+    }
+
+    button {
+      background: #e63946;
+      color: white;
+      border: none;
+      padding: 15px 25px;
+      border-radius: 30px;
+      font-size: 18px;
+      margin-top: 25px;
+      cursor: pointer;
+    }
+
+    img {
+      width: 100%;
+      border-radius: 15px;
+      margin-top: 15px;
+    }
+
+    /* Candle + Heartbeat */
+    .heartbeat {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,180,90,0.35), transparent 70%);
+      animation: beat 1.4s infinite;
+      display: none;
+      position: relative;
+      margin: 20px auto;
+    }
+
+    @keyframes beat {
+      0% { transform: scale(1); opacity: .5; }
+      20% { transform: scale(1.15); opacity: .9; }
+      40% { transform: scale(1); opacity: .6; }
+      60% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1); opacity: .5; }
+    }
+
+    .candle {
+      width: 60px;
+      height: 150px;
+      background: #f5f5f5;
+      border-radius: 10px;
+      margin: auto;
+      position: relative;
+      top: 25px;
+    }
+
+    .flame {
+      width: 30px;
+      height: 45px;
+      background: radial-gradient(circle, #ffd166, #ff9f1c, transparent 70%);
+      border-radius: 50%;
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: flicker .15s infinite alternate;
+      display: none;
+    }
+
+    @keyframes flicker {
+      from { transform: translateX(-50%) scale(1); }
+      to { transform: translateX(-50%) scale(1.05); }
+    }
+
+    #noBtn {
+      background: #6c757d;
+      position: absolute;
+    }
+
+    #yesMsg {
+      display: none;
+      margin-top: 20px;
+      font-size: 18px;
+      color: #6a040f;
+    }
+  </style>
+</head>
+<body>
+
+<!-- AUDIO -->
+<audio id="heartbeat" src="heartbeat.mp3" loop></audio>
+<audio id="song" src="song.mp3" loop></audio>
+
+<!-- 1️⃣ WELCOME -->
+<section class="active">
+  <div class="card">
+    <h2>Hey My Love ❤️</h2>
+    <p>I made something special for you… please read slowly 🥹</p>
+    <button onclick="next()">Next 💌</button>
+  </div>
+</section>
+
+<!-- 2️⃣ STORY -->
+<section>
+  <div class="card">
+    <h2>Our Story 💕</h2>
+    <p>Distance never mattered, because my heart chose you every day.</p>
+    <button onclick="next()">Next ✨</button>
+  </div>
+</section>
+
+<!-- 3️⃣ WHY YOU -->
+<section>
+  <div class="card">
+    <h2>Why It’s You 💖</h2>
+    <p>You feel like home. You feel like forever.</p>
+    <button onclick="next()">Memories 📸</button>
+  </div>
+</section>
+
+<!-- 4️⃣ MEMORIES -->
+<section>
+  <div class="card">
+    <h2>Our Memories 📸</h2>
+    <img src="memory1.jpg">
+    <img src="memory2.jpg">
+    <button onclick="next()">One More Moment 🕯️</button>
+  </div>
+</section>
+
+<!-- 5️⃣ CANDLE -->
+<section>
+  <div class="card">
+    <h2>My Heart for You 🫀</h2>
+    <div class="heartbeat" id="glow">
+      <div class="candle">
+        <div class="flame" id="flame"></div>
+      </div>
+    </div>
+    <p id="candleText">Before I ask… feel this.</p>
+    <button onclick="light()">Light the Candle 💖</button>
+  </div>
+</section>
+
+<!-- 6️⃣ VALENTINE -->
+<section>
+  <div class="card" style="position:relative">
+    <h2>Will you be my Valentine? 🌹</h2>
+    <button onclick="yes()">YES ❤️</button>
+    <button id="noBtn" onmouseover="moveNo()">NO 😏</button>
+    <div id="yesMsg">
+      🥰 You just made my heart happiest.  
+      <br>It’s you & me — always 💕
+    </div>
+  </div>
+</section>
+
+<script>
+  let current = 0;
+  const sections = document.querySelectorAll("section");
+
+  function next() {
+    sections[current].classList.remove("active");
+    current++;
+    sections[current].classList.add("active");
+  }
+
+  function light() {
+    document.getElementById("glow").style.display = "block";
+    document.getElementById("flame").style.display = "block";
+    document.getElementById("heartbeat").volume = 0.25;
+    document.getElementById("heartbeat").play();
+    document.getElementById("candleText").innerHTML =
+      "Every beat of my heart whispers your name 🥹";
+    setTimeout(() => {
+      document.getElementById("heartbeat").pause();
+      next();
+    }, 5000);
+  }
+
+  function moveNo() {
+    const btn = document.getElementById("noBtn");
+    btn.style.left = Math.random() * 200 + "px";
+    btn.style.top = Math.random() * 150 + "px";
+  }
+
+  function yes() {
+    document.getElementById("yesMsg").style.display = "block";
+    document.getElementById("song").volume = 0.3;
+    document.getElementById("song").play();
+  }
+</script>
+
+</body>
+</html>
